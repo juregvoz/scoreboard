@@ -9,6 +9,9 @@ import java.util.List;
 public class Match {
 
   public Match(String homeTeam, String awayTeam) {
+    if (homeTeam.equals(awayTeam)) {
+      throw new IllegalArgumentException("Team cannot play against itself!");
+    }
     this.homeTeam = homeTeam;
     this.awayTeam = awayTeam;
     this.score = List.of(0, 0);
