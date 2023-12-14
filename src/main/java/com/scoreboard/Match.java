@@ -1,26 +1,28 @@
 package com.scoreboard;
 
-
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
 public class Match {
 
-    @NonNull
-    private String homeTeam;
+  public Match(String homeTeam, String awayTeam) {
+    this.homeTeam = homeTeam;
+    this.awayTeam = awayTeam;
+    this.score = List.of(0, 0);
+    this.status = MatchStatus.IN_PROGRESS;
+    this.startTime = LocalDateTime.now();
+  }
 
-    @NonNull
-    private String awayTeam;
+  private String homeTeam;
 
-    private List<Integer> score;
+  private String awayTeam;
 
-    private MatchStatus status;
+  private List<Integer> score;
 
-    private LocalDateTime startTime;
+  private MatchStatus status;
+
+  private LocalDateTime startTime;
 }
