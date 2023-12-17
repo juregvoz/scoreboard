@@ -23,11 +23,12 @@ public class MatchTest {
     // assert
     Assertions.assertAll(
         () -> {
-          assertEquals(match.getHomeTeam(), homeTeam);
-          assertEquals(match.getAwayTeam(), awayTeam);
-          assertEquals(match.getScore(), List.of(0, 0));
-          assertEquals(match.getStatus(), MatchStatus.IN_PROGRESS);
-          assertNotEquals(match.getStartTime(), LocalDateTime.now());
+          assertEquals(homeTeam, match.getHomeTeam());
+          assertEquals(awayTeam, match.getAwayTeam());
+          assertEquals(List.of(0, 0), match.getScore());
+          assertEquals(0, match.getScoreSum());
+          assertEquals(MatchStatus.IN_PROGRESS, match.getStatus());
+          assertNotEquals(LocalDateTime.now(), match.getStartTime());
         });
   }
 

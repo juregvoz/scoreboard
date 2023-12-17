@@ -28,4 +28,8 @@ public class Match {
   private MatchStatus status;
 
   private LocalDateTime startTime;
+
+  public Integer getScoreSum() {
+    return score.get(0) + score.get(1);
+  }
 }
