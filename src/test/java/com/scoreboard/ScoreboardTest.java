@@ -1,16 +1,23 @@
 package com.scoreboard;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.function.Executable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScoreboardTest {
 
-  public Scoreboard scoreboard;
+  Scoreboard scoreboard;
+
+  @BeforeEach
+  void setup() {
+    this.scoreboard = new ScoreboardImpl();
+  }
 
   String homeTeam = "Slovenia";
   String awayTeam = "Turkey";
@@ -25,9 +32,9 @@ public class ScoreboardTest {
     // assert
     Assertions.assertAll(
         () -> {
-          assertEquals(match.getHomeTeam(), homeTeam);
-          assertEquals(match.getScore(), List.of(0, 0));
-          assertEquals(scoreboard.getBoard(), List.of(match));
+          assertEquals(homeTeam, match.getHomeTeam());
+          assertEquals(List.of(0, 0), match.getScore());
+          assertEquals(List.of(match), scoreboard.getBoard());
         });
   }
 
@@ -43,8 +50,32 @@ public class ScoreboardTest {
     List<Integer> score = scoreboard.getBoard().get(0).getScore();
     Assertions.assertAll(
         () -> {
-          assertEquals(score, List.of(1, 2));
+          assertEquals(List.of(1, 2), score);
         });
+  }
+
+  @Test
+  void updateScore_IllegalArgumentException() {
+    // arrange
+    scoreboard.startNewMatch(homeTeam, awayTeam);
+
+    // act
+    Executable executable = () -> scoreboard.updateScore(homeTeam, -1, awayTeam, 2);
+
+    // assert
+    assertThrows(IllegalArgumentException.class, executable);
+  }
+
+  @Test
+  void updateScore_MatchNotFound() {
+    // arrange
+    scoreboard.startNewMatch(homeTeam, awayTeam);
+
+    // act
+    Executable executable = () -> scoreboard.updateScore(homeTeam, 1, homeTeam, 2);
+
+    // assert
+    assertThrows(RuntimeException.class, executable);
   }
 
   @Test
@@ -58,8 +89,8 @@ public class ScoreboardTest {
     // assert
     Assertions.assertAll(
         () -> {
-          assertEquals(scoreboard.getBoard(), List.of());
-          assertEquals(match.getStatus(), MatchStatus.FINISHED);
+          assertEquals(List.of(), scoreboard.getBoard());
+          assertEquals(MatchStatus.FINISHED, match.getStatus());
         });
   }
 
@@ -75,13 +106,13 @@ public class ScoreboardTest {
     String homeTeam4 = "Japan";
     String awayTeam4 = "Mexico";
 
-    Match match1 = scoreboard.startNewMatch(homeTeam1, homeTeam1);
+    Match match1 = scoreboard.startNewMatch(homeTeam1, awayTeam1);
     TimeUnit.MILLISECONDS.sleep(1);
-    Match match2 = scoreboard.startNewMatch(homeTeam2, homeTeam2);
+    Match match2 = scoreboard.startNewMatch(homeTeam2, awayTeam2);
     TimeUnit.MILLISECONDS.sleep(1);
-    Match match3 = scoreboard.startNewMatch(homeTeam3, homeTeam3);
+    Match match3 = scoreboard.startNewMatch(homeTeam3, awayTeam3);
     TimeUnit.MILLISECONDS.sleep(1);
-    Match match4 = scoreboard.startNewMatch(homeTeam4, homeTeam4);
+    Match match4 = scoreboard.startNewMatch(homeTeam4, awayTeam4);
     TimeUnit.MILLISECONDS.sleep(1);
 
     scoreboard.updateScore(homeTeam1, 3, awayTeam1, 2);
@@ -90,23 +121,23 @@ public class ScoreboardTest {
     scoreboard.updateScore(homeTeam4, 2, awayTeam4, 2);
 
     // act
-    List<Match> matches = scoreboard.getOrderedBoard();
+    List<Match> orderedBoard = scoreboard.getOrderedBoard();
     List<String> summary = scoreboard.getSummary();
 
     // assert
     Assertions.assertAll(
         () -> {
-          assertEquals(matches.get(0), match1);
-          assertEquals(matches.get(1), match4);
-          assertEquals(matches.get(2), match2);
-          assertEquals(matches.get(3), match3);
+          assertEquals(match1, orderedBoard.get(0));
+          assertEquals(match4, orderedBoard.get(1));
+          assertEquals(match2, orderedBoard.get(2));
+          assertEquals(match3, orderedBoard.get(3));
           assertEquals(
-              summary,
               List.of(
                   "Slovenia 3 - Turkey 2",
                   "Japan 2 - Mexico 2",
                   "Brazil 1 - Pakistan 3",
-                  "Italy 0 - Germany 1"));
+                  "Italy 0 - Germany 1"),
+              summary);
         });
   }
 }

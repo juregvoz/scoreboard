@@ -28,7 +28,7 @@ public class MatchTest {
           assertEquals(List.of(0, 0), match.getScore());
           assertEquals(0, match.getScoreSum());
           assertEquals(MatchStatus.IN_PROGRESS, match.getStatus());
-          assertNotEquals(LocalDateTime.now(), match.getStartTime());
+          assertInstanceOf(LocalDateTime.class, match.getStartTime());
         });
   }
 

@@ -8,9 +8,10 @@ public interface Scoreboard {
   void updateScore(String homeTeam, Integer homeTeamScore, String awayTeam, Integer awayTeamScore);
 
   void finishMatch(String homeTeam, String awayTeam);
+
   List<Match> getBoard();
+
   List<Match> getOrderedBoard();
 
   List<String> getSummary();
-
 }

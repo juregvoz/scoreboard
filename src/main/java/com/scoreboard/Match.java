@@ -32,4 +32,8 @@ public class Match {
   public Integer getScoreSum() {
     return score.get(0) + score.get(1);
   }
+
+  public String getScoreString() {
+    return String.format("%s %s - %s %s", homeTeam, score.get(0), awayTeam, score.get(1));
+  }
 }
