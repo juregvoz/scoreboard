@@ -39,6 +39,20 @@ public class ScoreboardTest {
   }
 
   @Test
+  void startNewMatch_IllegalArgumentExceptions() {
+    // arrange
+    Match match = scoreboard.startNewMatch(homeTeam, awayTeam);
+
+    // act
+    Executable executable = () -> scoreboard.startNewMatch(homeTeam, "Brazil");
+
+    // assert
+    assertThrows(IllegalArgumentException.class, executable);
+    assertEquals(List.of(match), scoreboard.getBoard());
+  }
+
+
+  @Test
   void updateScore() {
     // arrange
     scoreboard.startNewMatch(homeTeam, awayTeam);

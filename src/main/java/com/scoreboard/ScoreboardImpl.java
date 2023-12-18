@@ -1,11 +1,7 @@
 package com.scoreboard;
 
+import java.util.*;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ScoreboardImpl implements Scoreboard {
@@ -18,6 +14,7 @@ public class ScoreboardImpl implements Scoreboard {
 
   public Match startNewMatch(String homeTeam, String awayTeam) {
     Match match = new Match(homeTeam, awayTeam);
+    checkTeamsAvailability(homeTeam, awayTeam);
     board.add(match);
     return match;
   }
@@ -57,6 +54,19 @@ public class ScoreboardImpl implements Scoreboard {
             .filter(m -> m.getHomeTeam().equals(homeTeam))
             .filter(m -> m.getAwayTeam().equals(awayTeam))
             .findAny();
-    return optionalMatch.orElseThrow(() -> new RuntimeException("Match not found"));
+    return optionalMatch.orElseThrow(() -> new RuntimeException("Match not found!"));
+  }
+
+  private void checkTeamsAvailability(String homeTeam, String awayTeam) {
+    Optional<String> optionalTeam =
+        board.stream()
+            .map(m -> List.of(m.getHomeTeam(), m.getAwayTeam()))
+            .flatMap(Collection::stream)
+            .filter(s -> s.equals(homeTeam) || s.equals(awayTeam))
+            .findAny();
+    optionalTeam.ifPresent(
+        t -> {
+          throw new IllegalArgumentException("Team already plays in another match!");
+        });
   }
 }
