@@ -14,7 +14,8 @@ public class Match {
     }
     this.homeTeam = homeTeam;
     this.awayTeam = awayTeam;
-    this.score = List.of(0, 0);
+    this.homeTeamScore = 0;
+    this.awayTeamScore = 0;
     this.status = MatchStatus.IN_PROGRESS;
     this.startTime = LocalDateTime.now();
   }
@@ -23,17 +24,28 @@ public class Match {
 
   private String awayTeam;
 
-  private List<Integer> score;
+  private Integer homeTeamScore;
+
+  private Integer awayTeamScore;
 
   private MatchStatus status;
 
   private LocalDateTime startTime;
 
   public Integer getScoreSum() {
-    return score.get(0) + score.get(1);
+    return homeTeamScore + awayTeamScore;
   }
 
   public String getScoreString() {
-    return String.format("%s %s - %s %s", homeTeam, score.get(0), awayTeam, score.get(1));
+    return String.format("%s %s - %s %s", homeTeam, homeTeamScore, awayTeam, awayTeamScore);
+  }
+
+  public List<Integer> getScore() {
+    return List.of(this.homeTeamScore, this.awayTeamScore);
+  }
+
+  public void setScore(Integer homeTeamScore, Integer awayTeamScore) {
+    this.awayTeamScore = awayTeamScore;
+    this.homeTeamScore = homeTeamScore;
   }
 }

@@ -40,4 +40,20 @@ public class MatchTest {
     // assert
     assertThrows(IllegalArgumentException.class, executable);
   }
+
+  @Test
+    void setScore() {
+      // arrange
+      String awayTeam = "Brazil";
+      String homeTeam = "Argentina";
+      Match match = new Match(homeTeam, awayTeam);
+
+      // act
+      match.setScore(3,2);
+      List<Integer> score = match.getScore();
+
+      // assert
+      assertEquals(List.of(3,2), score);
+
+  }
 }

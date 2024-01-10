@@ -24,7 +24,7 @@ public class ScoreboardImpl implements Scoreboard {
     if (homeTeamScore < 0 || awayTeamScore < 0) {
       throw new IllegalArgumentException("Score cannot be negative!");
     }
-    findMatch(homeTeam, awayTeam).setScore(List.of(homeTeamScore, awayTeamScore));
+    findMatch(homeTeam, awayTeam).setScore(homeTeamScore, awayTeamScore);
   }
 
   public void finishMatch(String homeTeam, String awayTeam) {
