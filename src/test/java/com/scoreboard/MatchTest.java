@@ -22,14 +22,12 @@ public class MatchTest {
 
     // assert
     Assertions.assertAll(
-        () -> {
-          assertEquals(homeTeam, match.getHomeTeam());
-          assertEquals(awayTeam, match.getAwayTeam());
-          assertEquals(List.of(0, 0), match.getScore());
-          assertEquals(0, match.getScoreSum());
-          assertEquals(MatchStatus.IN_PROGRESS, match.getStatus());
-          assertInstanceOf(LocalDateTime.class, match.getStartTime());
-        });
+        () -> assertEquals(homeTeam, match.getHomeTeam()),
+        () -> assertEquals(awayTeam, match.getAwayTeam()),
+        () -> assertEquals(List.of(0, 0), match.getScore()),
+        () -> assertEquals(0, match.getScoreSum()),
+        () -> assertEquals(MatchStatus.IN_PROGRESS, match.getStatus()),
+        () -> assertInstanceOf(LocalDateTime.class, match.getStartTime()));
   }
 
   @Test
@@ -42,18 +40,17 @@ public class MatchTest {
   }
 
   @Test
-    void setScore() {
-      // arrange
-      String awayTeam = "Brazil";
-      String homeTeam = "Argentina";
-      Match match = new Match(homeTeam, awayTeam);
+  void setScore() {
+    // arrange
+    String awayTeam = "Brazil";
+    String homeTeam = "Argentina";
+    Match match = new Match(homeTeam, awayTeam);
 
-      // act
-      match.setScore(3,2);
-      List<Integer> score = match.getScore();
+    // act
+    match.setScore(3, 2);
+    List<Integer> score = match.getScore();
 
-      // assert
-      assertEquals(List.of(3,2), score);
-
+    // assert
+    assertEquals(List.of(3, 2), score);
   }
 }

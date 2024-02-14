@@ -1,14 +1,14 @@
 package com.scoreboard;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScoreboardTest {
 
@@ -31,11 +31,9 @@ public class ScoreboardTest {
 
     // assert
     Assertions.assertAll(
-        () -> {
-          assertEquals(homeTeam, match.getHomeTeam());
-          assertEquals(List.of(0, 0), match.getScore());
-          assertEquals(List.of(match), scoreboard.getBoard());
-        });
+        () -> assertEquals(homeTeam, match.getHomeTeam()),
+        () -> assertEquals(List.of(0, 0), match.getScore()),
+        () -> assertEquals(List.of(match), scoreboard.getBoard()));
   }
 
   @Test
@@ -47,10 +45,10 @@ public class ScoreboardTest {
     Executable executable = () -> scoreboard.startNewMatch(homeTeam, "Brazil");
 
     // assert
-    assertThrows(IllegalArgumentException.class, executable);
-    assertEquals(List.of(match), scoreboard.getBoard());
+    Assertions.assertAll(
+        () -> assertThrows(IllegalArgumentException.class, executable),
+        () -> assertEquals(List.of(match), scoreboard.getBoard()));
   }
-
 
   @Test
   void updateScore() {
@@ -61,11 +59,7 @@ public class ScoreboardTest {
     scoreboard.updateScore(homeTeam, 1, awayTeam, 2);
 
     // assert
-    List<Integer> score = scoreboard.getBoard().get(0).getScore();
-    Assertions.assertAll(
-        () -> {
-          assertEquals(List.of(1, 2), score);
-        });
+    assertEquals(List.of(1, 2), scoreboard.getBoard().get(0).getScore());
   }
 
   @Test
@@ -102,10 +96,8 @@ public class ScoreboardTest {
 
     // assert
     Assertions.assertAll(
-        () -> {
-          assertEquals(List.of(), scoreboard.getBoard());
-          assertEquals(MatchStatus.FINISHED, match.getStatus());
-        });
+        () -> assertEquals(List.of(), scoreboard.getBoard()),
+        () -> assertEquals(MatchStatus.FINISHED, match.getStatus()));
   }
 
   @Test
@@ -140,18 +132,17 @@ public class ScoreboardTest {
 
     // assert
     Assertions.assertAll(
-        () -> {
-          assertEquals(match1, orderedBoard.get(0));
-          assertEquals(match4, orderedBoard.get(1));
-          assertEquals(match2, orderedBoard.get(2));
-          assertEquals(match3, orderedBoard.get(3));
-          assertEquals(
-              List.of(
-                  "Slovenia 3 - Turkey 2",
-                  "Japan 2 - Mexico 2",
-                  "Brazil 1 - Pakistan 3",
-                  "Italy 0 - Germany 1"),
-              summary);
-        });
+        () -> assertEquals(match1, orderedBoard.get(0)),
+        () -> assertEquals(match4, orderedBoard.get(1)),
+        () -> assertEquals(match2, orderedBoard.get(2)),
+        () -> assertEquals(match3, orderedBoard.get(3)),
+        () ->
+            assertEquals(
+                List.of(
+                    "Slovenia 3 - Turkey 2",
+                    "Japan 2 - Mexico 2",
+                    "Brazil 1 - Pakistan 3",
+                    "Italy 0 - Germany 1"),
+                summary));
   }
 }
