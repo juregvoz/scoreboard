@@ -32,6 +32,15 @@ public class ScoreboardImpl implements Scoreboard {
     board.removeIf(match -> match.getStatus().equals(MatchStatus.FINISHED));
   }
 
+  public Match findMatch(String homeTeam, String awayTeam) {
+    Optional<Match> optionalMatch =
+        board.stream()
+            .filter(m -> m.getHomeTeam().equals(homeTeam))
+            .filter(m -> m.getAwayTeam().equals(awayTeam))
+            .findAny();
+    return optionalMatch.orElseThrow(() -> new RuntimeException("Match not found!"));
+  }
+
   public List<Match> getBoard() {
     return this.board;
   }
@@ -46,15 +55,6 @@ public class ScoreboardImpl implements Scoreboard {
 
   public List<String> getSummary() {
     return getOrderedBoard().stream().map(Match::getScoreString).toList();
-  }
-
-  private Match findMatch(String homeTeam, String awayTeam) {
-    Optional<Match> optionalMatch =
-        board.stream()
-            .filter(m -> m.getHomeTeam().equals(homeTeam))
-            .filter(m -> m.getAwayTeam().equals(awayTeam))
-            .findAny();
-    return optionalMatch.orElseThrow(() -> new RuntimeException("Match not found!"));
   }
 
   private void checkTeamsAvailability(String homeTeam, String awayTeam) {

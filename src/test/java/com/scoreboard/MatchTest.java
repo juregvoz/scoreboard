@@ -11,12 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchTest {
 
+  String homeTeam = "Argentina";
+  String awayTeam = "Brazil";
+
   @Test
   void startNewMatch() {
-    // arrange
-    String awayTeam = "Brazil";
-    String homeTeam = "Argentina";
-
     // act
     Match match = new Match(homeTeam, awayTeam);
 
@@ -33,7 +32,7 @@ public class MatchTest {
   @Test
   void startNewMatch_IllegalArgumentException() {
     // act
-    Executable executable = () -> new Match("Brazil", "Brazil");
+    Executable executable = () -> new Match(homeTeam, homeTeam);
 
     // assert
     assertThrows(IllegalArgumentException.class, executable);
@@ -42,8 +41,6 @@ public class MatchTest {
   @Test
   void setScore() {
     // arrange
-    String awayTeam = "Brazil";
-    String homeTeam = "Argentina";
     Match match = new Match(homeTeam, awayTeam);
 
     // act

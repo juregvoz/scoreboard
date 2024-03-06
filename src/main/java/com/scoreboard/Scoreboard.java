@@ -14,4 +14,6 @@ public interface Scoreboard {
   List<Match> getOrderedBoard();
 
   List<String> getSummary();
+
+  Match findMatch(String homeTeam, String awayTeam);
 }
