@@ -1,13 +1,10 @@
 package com.scoreboard;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
 public class ScoreboardApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ScoreboardApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    Scoreboard scoreboard = new ScoreboardImpl();
+    scoreboard.startNewMatch("Turkey", "Brazil");
+    System.out.println(scoreboard.getSummary());
+  }
 }

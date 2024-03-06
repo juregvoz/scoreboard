@@ -1,9 +1,7 @@
 package com.scoreboard;
 
 import java.util.*;
-import org.springframework.stereotype.Service;
 
-@Service
 public class ScoreboardImpl implements Scoreboard {
 
   private final List<Match> board;
